@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Ticket Details - IAM Dashboard{% endblock %}
+
+{% block content %}
+    <h2>Ticket Details</h2>
+    <p><strong>Resource:</strong> {{ ticket.resource }}</p>
+    <p><strong>Access Key ID:</strong> {{ ticket.access_key_id }}</p>
+    <p><strong>Status:</strong> {{ ticket.status }}</p>
+    <p><strong>Requested by:</strong> {{ ticket.username }}</p>
+    <p><strong>Requested on:</strong> {{ ticket.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+
+    <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

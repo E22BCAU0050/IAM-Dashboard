@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard - IAM Dashboard{% endblock %}
+
+{% block content %}
+    <h2>User Dashboard</h2>
+    <h3>Create a New Access Request</h3>
+    <form method="POST">
+        <label for="resource">Resource</label>
+        <input type="text" id="resource" name="resource" placeholder="Enter Resource" required>
+        <label for="access_key_id">Access Key ID</label>
+        <input type="text" id="access_key_id" name="access_key_id" placeholder="Enter Access Key ID" required>
+        <button type="submit">Submit Ticket</button>
+    </form>
+
+    <h3>Your Tickets</h3>
+    <table>
+        <tr>
+            <th>Resource</th>
+            <th>Access Key ID</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.resource }}</td>
+            <td>{{ ticket.access_key_id }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ ticket.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

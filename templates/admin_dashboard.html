@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+
+<!-- Display the logged-in admin's username -->
+<p>Welcome, {{ session['username'] }}</p>
+
+<h2>Pending Tickets</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Ticket ID</th>
+            <th>Resource</th>
+            <th>Status</th>
+            <th>Username</th> <!-- Add this column for displaying username -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in pending_tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.resource }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ get_username(ticket.user_id) }}</td> <!-- Display the username here -->
+            <td>
+                <form action="{{ url_for('admin_dashboard') }}" method="POST">
+                    <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                    <button type="submit" name="action" value="approve">Approve</button>
+                    <button type="submit" name="action" value="reject">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Completed Tickets</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Ticket ID</th>
+            <th>Resource</th>
+            <th>Status</th>
+            <th>Username</th> <!-- Add this column for displaying username -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in completed_tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.resource }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ get_username(ticket.user_id) }}</td> <!-- Display the username here -->
+            <td>
+                {% if ticket.status == 'Rejected' %}
+                <span class="badge badge-danger">Rejected</span>
+                {% else %}
+                <span class="badge badge-success">Approved</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
